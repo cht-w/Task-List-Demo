@@ -6,7 +6,6 @@ const clearBtn = document.querySelector("#clear-task");
 const ulList = document.querySelector(".list");
 
 // 加载所有事件监听
-
 loadEventListeners();
 
 function loadEventListeners() {
@@ -40,8 +39,22 @@ function removeTask(e) {
    if(e.target.classList.contains("delete-item")) {
       if(window.confirm("Are You Sure Delete?")) {
          e.target.parentElement.remove();
+         // 删除本地存储数据
+         removeLocalStorageTask(e);
       }
    }
+}
+function  removeLocalStorageTask(e) {
+     // console.log(e.target.parentElement.firstChild.textContent);
+      let delItem = e.target.parentElement.firstChild.textContent;
+      let tasks = JSON.parse(localStorage.getItem("tasks"));
+      console.log(delItem);
+      console.log(tasks);
+      let index = tasks.indexOf(delItem);
+      if(index > -1) {
+         tasks.splice(index , 1);
+         localStorage.setItem("tasks" , JSON.stringify(tasks));
+      }
 }
 
 function removeAllTask() {
@@ -67,7 +80,7 @@ function filterTask(e){
      }
   })
 }
-
+// 设置本地存储
 function saveTask(task) {
    let tasks = [];
    if(localStorage.getItem("tasks") === null) {
@@ -78,7 +91,7 @@ function saveTask(task) {
    tasks.push(task);
    localStorage.setItem("tasks" , JSON.stringify(tasks));
 }
-
+//获取本地存储
 function getTask() {
    let tasks = [];
    if(localStorage.getItem("tasks") === null) {
@@ -86,5 +99,15 @@ function getTask() {
    }else {
       tasks = JSON.parse(localStorage.getItem("tasks"));
    }
-   console.log(tasks);
+   tasks.forEach((item)=> {
+      //创建li
+      const li = document.createElement("li");
+      const i = document.createElement('i');
+      li.className = "item";
+      // 将taskInput里的值放到li中
+      li.appendChild(document.createTextNode(item));
+      i.className ="iconfont icon-10 delete-item";
+      li.appendChild(i);
+      ulList.appendChild(li);
+   })
 }

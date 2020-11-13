@@ -116,6 +116,9 @@
         font-size: 18px;
         cursor: pointer;
     }
+    .delete-item:hover {
+        color: red;
+    }
 </style>
 <body>
     <section class="box">
@@ -130,7 +133,6 @@
             <h2>Tasks</h2>
             <div class="input-box">
                 <input type="text" id="filter-task" class="filter-task" placeholder="Filter Task">
-                <button id="filter-btn"></button>
             </div>
             <ul class="list"></ul>
             <button id="clear-task">Clear All Tasks</button>
